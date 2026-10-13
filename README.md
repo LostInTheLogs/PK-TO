@@ -1,41 +1,71 @@
 ```mermaid
 classDiagram
-    class Currency {
-        +string code
-        +string name
+    class Program {
+        +Main(args: string[]) void
     }
 
-    class RatesProvider {
+    class IRemoteRepository {
         <<interface>>
-        +Refresh() void
-        +GetSupportedCurrencies() List~Currency~
-        +GetRate(fromCode: string, toCode: string) Decimal
+        +GetData() Task~string~
     }
 
-    class NbpRatesProvider {
-        -httpClient: HttpClient
-        -cache: Dictionary~string, Decimal~
-        +Refresh() void
-        +GetSupportedCurrencies() List~Currency~
-        +GetRate(fromCode: string, toCode: string) Decimal
+    class NBPRemoteRepository {
+        +GetData() Task~string~
     }
 
-    class CurrencyConverter {
-        -provider: RatesProvider
-        +CurrencyConverter(provider: RatesProvider)
-        +Convert(fromCode: string, toCode: string, amount: Decimal) Decimal
-        +GetSupportedCurrencies() List~Currency~
+    class IParser {
+        <<interface>>
+        +Parse(data: string, collection: ICurrencyCollection) void
     }
 
-    class CurrencyApp {
-        -provider: RatesProvider
-        -converter: CurrencyConverter
-        +Run() void
+    class NBPXMLParser {
+        +Parse(data: string, collection: ICurrencyCollection) void
     }
 
-    CurrencyConverter --> RatesProvider
-    NbpRatesProvider ..|> RatesProvider
+    class ICurrency {
+        <<interface>>
+        +Name: string
+        +Code: string
+        +Rate: decimal
+        +Multiplier: decimal
+        +Exchange(from: ICurrency, to: ICurrency, amount: decimal) decimal
+    }
 
-    CurrencyApp --> CurrencyConverter
-    CurrencyApp --> RatesProvider
-```
+    class Currency {
+        +Name: string
+        +Code: string
+        +Rate: decimal
+        +Multiplier: decimal
+        +Currency(name: string, code: string, rate: decimal, multiplier: decimal)
+        +ToString() string
+    }
+
+    class ICurrencyCollection {
+        <<interface>>
+        +Add(currency: ICurrency) void
+        +Remove(code: string) void
+        +Get(code: string) ICurrency?
+        +GetAll() ICurrency[]
+    }
+
+    class CurrencyCollection {
+        -_currencies: Dictionary~string, ICurrency~
+        +CurrencyCollection()
+        +Add(currency: ICurrency) void
+        +Remove(code: string) void
+        +Get(code: string) ICurrency?
+        +GetAll() ICurrency[]
+    }
+
+    Program --> IRemoteRepository
+    Program --> IParser
+    Program --> ICurrencyCollection
+
+    NBPRemoteRepository ..|> IRemoteRepository
+    NBPXMLParser ..|> IParser
+    Currency ..|> ICurrency
+    CurrencyCollection ..|> ICurrencyCollection
+
+    ICurrencyCollection --> ICurrency
+    CurrencyCollection --> Currency
+    NBPXMLParser --> ICurrencyCollection```
