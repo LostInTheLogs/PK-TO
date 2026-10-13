@@ -69,3 +69,4 @@ classDiagram
     ICurrencyCollection --> ICurrency
     CurrencyCollection --> Currency
     NBPXMLParser --> ICurrencyCollection
+```
