@@ -1,34 +1,41 @@
-
 ```mermaid
 classDiagram
+    class Currency {
+        +string code
+        +string name
+    }
 
-    Currency -- RatesSource
-    class RatesSource {
-        <<Interface>>
-        +Refresh()
+    class RatesProvider {
+        <<interface>>
+        +Refresh() void
         +GetSupportedCurrencies() List~Currency~
-        +GetRate(string from_code, string to_code) Decimal
-    }
-    RatesSource <|-- NBPRatesSource 
-    class NBPRatesSource{
+        +GetRate(fromCode: string, toCode: string) Decimal
     }
 
-    class Currency{
-      +string name
-      +string code
+    class NbpRatesProvider {
+        -httpClient: HttpClient
+        -cache: Dictionary~string, Decimal~
+        +Refresh() void
+        +GetSupportedCurrencies() List~Currency~
+        +GetRate(fromCode: string, toCode: string) Decimal
     }
 
-    CurrencyConverter o-- RatesSource
-    class CurrencyConverter{
-        -RatesSource RatesSource
-        +CurrencyConverter(RatesSource source): CurrencyConverter
-        +Convert(string from_code, string to_code, Decimal amount) Decimal
+    class CurrencyConverter {
+        -provider: RatesProvider
+        +CurrencyConverter(provider: RatesProvider)
+        +Convert(fromCode: string, toCode: string, amount: Decimal) Decimal
+        +GetSupportedCurrencies() List~Currency~
     }
 
-    CurrencyApp *-- CurrencyConverter
-    CurrencyApp *-- RatesSource
     class CurrencyApp {
-        -RatesSource source
-        -CurrencyConverter converter
+        -provider: RatesProvider
+        -converter: CurrencyConverter
+        +Run() void
     }
+
+    CurrencyConverter --> RatesProvider
+    NbpRatesProvider ..|> RatesProvider
+
+    CurrencyApp --> CurrencyConverter
+    CurrencyApp --> RatesProvider
 ```
