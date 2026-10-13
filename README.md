@@ -1,7 +1,12 @@
 ```mermaid
 classDiagram
     class Program {
+        -_repository: IRemoteRepository
+        -_parser: IParser
+        -_collection: ICurrencyCollection
+        +Program(repository: IRemoteRepository, parser: IParser, collection: ICurrencyCollection)
         +Main(args: string[]) void
+        +Run() Task
     }
 
     class IRemoteRepository {
@@ -10,6 +15,7 @@ classDiagram
     }
 
     class NBPRemoteRepository {
+        +Endpoint: string
         +GetData() Task~string~
     }
 
@@ -37,6 +43,7 @@ classDiagram
         +Rate: decimal
         +Multiplier: decimal
         +Currency(name: string, code: string, rate: decimal, multiplier: decimal)
+        +Exchange(from: ICurrency, to: ICurrency, amount: decimal) decimal
         +ToString() string
     }
 
@@ -45,7 +52,12 @@ classDiagram
         +Add(currency: ICurrency) void
         +Remove(code: string) void
         +Get(code: string) ICurrency?
+        +TryGet(code: string) ICurrency?
         +GetAll() ICurrency[]
+        +Contains(code: string) bool
+        +Count: int
+        +Clear() void
+        +Update(currency: ICurrency) void
     }
 
     class CurrencyCollection {
@@ -54,7 +66,12 @@ classDiagram
         +Add(currency: ICurrency) void
         +Remove(code: string) void
         +Get(code: string) ICurrency?
+        +TryGet(code: string) ICurrency?
         +GetAll() ICurrency[]
+        +Contains(code: string) bool
+        +Count: int
+        +Clear() void
+        +Update(currency: ICurrency) void
     }
 
     Program --> IRemoteRepository
@@ -68,4 +85,4 @@ classDiagram
 
     ICurrencyCollection --> ICurrency
     CurrencyCollection --> Currency
-    NBPXMLParser --> ICurrencyCollection```
+    NBPXMLParser --> ICurrencyCollection
