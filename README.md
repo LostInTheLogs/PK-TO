@@ -68,7 +68,7 @@ classDiagram
     Currency ..|> ICurrency
     CurrencyCollection ..|> ICurrencyCollection
 
-    ICurrencyCollection o-- ICurrency
-    CurrencyCollection o-- Currency
+    CurrencyCollection o-- ICurrency
     NBPXMLParser --> ICurrencyCollection
+
 ```
