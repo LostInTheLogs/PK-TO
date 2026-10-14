@@ -1,8 +1,7 @@
 namespace CurrencyConverter.Model;
 
-public class Currency:ICurrency
+public class Currency : ICurrency
 {
-    
     public string Name { get; set; }
     public string Code { get; set; }
     public decimal Rate { get; set; }
@@ -15,7 +14,7 @@ public class Currency:ICurrency
         Rate = rate;
         Multiplier = multiplier;
     }
-    
+
     public override string ToString()
     {
         return $"{Code} ({Name}) - {Rate} ({Multiplier})";

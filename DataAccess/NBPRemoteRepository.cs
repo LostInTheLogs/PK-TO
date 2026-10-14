@@ -16,7 +16,7 @@ public class NBPRemoteRepository : IRemoteRepository
     {
         return instance;
     }
-    
+
     public async Task<string> GetData()
     {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);

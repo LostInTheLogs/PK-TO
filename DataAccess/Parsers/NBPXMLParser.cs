@@ -16,15 +16,15 @@ public class NBPXMLParser:IParser
                 if (descendant.Name.LocalName != "pozycja") {continue;}
                 string name = descendant.Elements("nazwa_waluty").First().Value;
                 string code = descendant.Elements("kod_waluty").First().Value;
-                string multiplier_str = descendant.Elements("przelicznik").First().Value;
-                string rate_str = descendant.Elements("kurs_sredni").First().Value;
+                string multiplierStr = descendant.Elements("przelicznik").First().Value;
+                string rateStr = descendant.Elements("kurs_sredni").First().Value;
                 
                 var format = new System.Globalization.NumberFormatInfo
                 {
                     NumberDecimalSeparator = ","
                 };
-                decimal rate = decimal.Parse(rate_str, format);
-                decimal multiplier = decimal.Parse(multiplier_str, format);
+                decimal rate = decimal.Parse(rateStr, format);
+                decimal multiplier = decimal.Parse(multiplierStr, format);
                 
                 collection.Add(new Currency(name, code, rate, multiplier));
             }
