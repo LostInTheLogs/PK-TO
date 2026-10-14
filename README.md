@@ -1,6 +1,9 @@
 ```mermaid
 classDiagram
     class Program {
+        -repository: IRemoteRepository
+        -parser: IParser
+        -collection: ICurrencyCollection
         +Main(args: string[]) Task
     }
 
@@ -37,6 +40,7 @@ classDiagram
         +Rate: decimal
         +Multiplier: decimal
         +Currency(name: string, code: string, rate: decimal, multiplier: decimal)
+        +Exchange(from: ICurrency, to: ICurrency, amount: decimal) decimal
         +ToString() string
     }
 
@@ -57,18 +61,16 @@ classDiagram
         +GetAll() ICurrency[]
     }
 
-    Program --> IRemoteRepository
-
-
-    Program --> IParser
-    Program --> ICurrencyCollection
+    Program --* IRemoteRepository
+    Program --* IParser
+    Program --* ICurrencyCollection
 
     NBPRemoteRepository ..|> IRemoteRepository
     NBPXMLParser ..|> IParser
     Currency ..|> ICurrency
     CurrencyCollection ..|> ICurrencyCollection
 
-    CurrencyCollection o-- ICurrency
+    CurrencyCollection --* ICurrency
     NBPXMLParser --> ICurrencyCollection
 
 ```
