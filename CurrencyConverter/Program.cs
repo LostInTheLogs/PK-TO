@@ -9,9 +9,10 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        IRemoteRepository repository = new NBPRemoteRepository();
+        IRemoteRepository repository = NBPRemoteRepository.GetInstance();
         IParser parser = new NBPXMLParser();
         ICurrencyCollection collection = new CurrencyCollection();
+        ICurrencyExchanger exchanger = new CurrencyExchanger();
         
         var data = await repository.GetData();
         parser.Parse(data, collection);
@@ -69,7 +70,7 @@ class Program
             }
         }
 
-        var result = ICurrency.Exchange(from, to, amount);
+        var result = exchanger.Exchange(from, to, amount);
         Console.WriteLine($"Wynik: {result} {to.Code}");
 
     }

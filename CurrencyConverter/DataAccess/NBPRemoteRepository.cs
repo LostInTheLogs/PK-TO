@@ -5,11 +5,22 @@ namespace CurrencyConverter.DataAccess.Model;
 
 public class NBPRemoteRepository : IRemoteRepository
 {
+    static NBPRemoteRepository instance;
+    HttpClient client = new HttpClient();
+
+    private NBPRemoteRepository()
+    {
+    }
+
+    public static NBPRemoteRepository GetInstance()
+    {
+        return instance;
+    }
+    
     public async Task<string> GetData()
     {
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-        using HttpClient client = new HttpClient();
         try
         {
             byte[] dataBytes = await client.GetByteArrayAsync("https://static.nbp.pl/dane/kursy/xml/LastA.xml");
