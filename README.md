@@ -4,6 +4,7 @@ classDiagram
         -repository: IRemoteRepository
         -parser: IParser
         -collection: ICurrencyCollection
+        -exchanger: ICurrencyExchanger
         +Main(args: string[]) Task
     }
 
@@ -31,6 +32,17 @@ classDiagram
         +Code: string
         +Rate: decimal
         +Multiplier: decimal
+    }
+
+    class ICurrencyExchanger {
+        <<interface>>
+        +Exchange(from: ICurrency, to: ICurrency, amount: decimal) decimal
+    }
+
+
+    class CurrencyExchanger {
+        -collection: ICurrencyCollection
+        +CurrencyExchanger(collection: ICurrencyCollection)
         +Exchange(from: ICurrency, to: ICurrency, amount: decimal) decimal
     }
 
@@ -40,9 +52,9 @@ classDiagram
         +Rate: decimal
         +Multiplier: decimal
         +Currency(name: string, code: string, rate: decimal, multiplier: decimal)
-        +Exchange(from: ICurrency, to: ICurrency, amount: decimal) decimal
         +ToString() string
     }
+
 
     class ICurrencyCollection {
         <<interface>>
@@ -53,7 +65,7 @@ classDiagram
     }
 
     class CurrencyCollection {
-        -_currencies: Dictionary~string, ICurrency~
+        -currencies: Dictionary~string, ICurrency~
         +CurrencyCollection()
         +Add(currency: ICurrency) void
         +Remove(code: string) void
@@ -64,13 +76,16 @@ classDiagram
     Program --* IRemoteRepository
     Program --* IParser
     Program --* ICurrencyCollection
+    Program --* ICurrencyExchanger
 
     NBPRemoteRepository ..|> IRemoteRepository
     NBPXMLParser ..|> IParser
     Currency ..|> ICurrency
+    CurrencyExchanger ..|> ICurrencyExchanger
     CurrencyCollection ..|> ICurrencyCollection
 
     CurrencyCollection --* ICurrency
+    CurrencyExchanger --o ICurrencyCollection
     NBPXMLParser --> ICurrencyCollection
 
 ```
