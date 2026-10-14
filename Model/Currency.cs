@@ -18,6 +18,6 @@ public class Currency:ICurrency
     
     public override string ToString()
     {
-        return $"{Name} ({Code}) - {Rate} ({Multiplier})";
+        return $"{Code} ({Name}) - {Rate} ({Multiplier})";
     }
 }

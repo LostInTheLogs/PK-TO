@@ -14,6 +14,7 @@ classDiagram
     }
 
     class NBPRemoteRepository {
+        -client: HttpClient
         -instance: NBPRemoteRepository
         +GetData() Task~string~
         +GetInstance() NBPRemoteRepository
@@ -38,15 +39,11 @@ classDiagram
 
     class ICurrencyExchanger {
         <<interface>>
-        +Refresh(collection: ICurrencyCollection)
         +Exchange(from: ICurrency, to: ICurrency, amount: decimal) decimal
     }
 
 
     class CurrencyExchanger {
-        -collection: ICurrencyCollection
-        +CurrencyExchanger(collection: ICurrencyCollection)
-        +Refresh(collection: ICurrencyCollection)
         +Exchange(from: ICurrency, to: ICurrency, amount: decimal) decimal
     }
 
@@ -89,7 +86,5 @@ classDiagram
     CurrencyCollection ..|> ICurrencyCollection
 
     CurrencyCollection --* ICurrency
-    CurrencyExchanger --o ICurrencyCollection
     NBPXMLParser --> ICurrencyCollection
-
 ```

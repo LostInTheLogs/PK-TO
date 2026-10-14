@@ -5,7 +5,7 @@ namespace CurrencyConverter.DataAccess.Model;
 
 public class NBPRemoteRepository : IRemoteRepository
 {
-    static NBPRemoteRepository instance;
+    private static NBPRemoteRepository instance = new NBPRemoteRepository();
     HttpClient client = new HttpClient();
 
     private NBPRemoteRepository()

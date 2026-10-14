@@ -7,6 +7,29 @@ namespace CurrencyConverter;
 
 class Program
 {
+
+    static ICurrency readCurrency(string prompt, ICurrencyCollection collection)
+    {
+        ICurrency? currency = null;
+        
+        while (true)
+        {
+            Console.Write(prompt);
+            string targetCode = Console.ReadLine().Trim();
+            currency = collection.Get(targetCode);
+            if (currency == null)
+            {
+                Console.WriteLine($"Currency '{targetCode}' not found.");
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return currency;
+    }
+    
     static async Task Main(string[] args)
     {
         IRemoteRepository repository = NBPRemoteRepository.GetInstance();
@@ -23,37 +46,8 @@ class Program
             Console.WriteLine(currency.ToString());
         }
 
-        ICurrency from = null;
-        while (true)
-        {
-            Console.Write("Source currency: ");
-            string sourceCode = Console.ReadLine().Trim();
-            from = collection.Get(sourceCode);
-            if (from == null)
-            {
-                Console.WriteLine($"Currency '{sourceCode}' not found.");
-            }
-            else
-            {
-                break;
-            }
-        }
-        
-        ICurrency to = null;
-        while (true)
-        {
-            Console.Write("Target currency: ");
-            string targetCode = Console.ReadLine().Trim();
-            to = collection.Get(targetCode);
-            if (to == null)
-            {
-                Console.WriteLine($"Currency '{targetCode}' not found.");
-            }
-            else
-            {
-                break;
-            }
-        }
+        ICurrency from = readCurrency("Source currency: ",  collection);
+        ICurrency to = readCurrency("Target currency: ",  collection);
 
         decimal amount;
         while (true)
@@ -71,7 +65,7 @@ class Program
         }
 
         var result = exchanger.Exchange(from, to, amount);
-        Console.WriteLine($"Wynik: {result} {to.Code}");
+        Console.WriteLine($"Final amount: {result} {to.Code}");
 
     }
 }
