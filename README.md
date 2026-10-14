@@ -14,7 +14,9 @@ classDiagram
     }
 
     class NBPRemoteRepository {
+        -instance: NBPRemoteRepository
         +GetData() Task~string~
+        +GetInstance() NBPRemoteRepository
     }
 
     class IParser {
@@ -36,6 +38,7 @@ classDiagram
 
     class ICurrencyExchanger {
         <<interface>>
+        +Refresh(collection: ICurrencyCollection)
         +Exchange(from: ICurrency, to: ICurrency, amount: decimal) decimal
     }
 
@@ -43,6 +46,7 @@ classDiagram
     class CurrencyExchanger {
         -collection: ICurrencyCollection
         +CurrencyExchanger(collection: ICurrencyCollection)
+        +Refresh(collection: ICurrencyCollection)
         +Exchange(from: ICurrency, to: ICurrency, amount: decimal) decimal
     }
 
