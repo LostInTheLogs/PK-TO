@@ -29,6 +29,7 @@ public class CurrencyCollection : ICurrencyCollection
         {
             return null;
         }
+
         return currencyResult;
     }
 

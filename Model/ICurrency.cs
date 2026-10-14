@@ -6,5 +6,4 @@ public interface ICurrency
     string Code { get; set; }
     decimal Rate { get; set; }
     decimal Multiplier { get; set; }
-
 }
