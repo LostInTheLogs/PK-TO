@@ -58,6 +58,8 @@ classDiagram
     }
 
     Program --> IRemoteRepository
+
+
     Program --> IParser
     Program --> ICurrencyCollection
 
@@ -66,7 +68,7 @@ classDiagram
     Currency ..|> ICurrency
     CurrencyCollection ..|> ICurrencyCollection
 
-    ICurrencyCollection --> ICurrency
-    CurrencyCollection --> Currency
+    ICurrencyCollection o-- ICurrency
+    CurrencyCollection o-- Currency
     NBPXMLParser --> ICurrencyCollection
 ```
