@@ -7,11 +7,10 @@ namespace CurrencyConverter;
 
 class Program
 {
-
-    static ICurrency readCurrency(string prompt, ICurrencyCollection collection)
+    static ICurrency ReadCurrency(string prompt, ICurrencyCollection collection)
     {
         ICurrency? currency = null;
-        
+
         while (true)
         {
             Console.Write(prompt);
@@ -29,25 +28,25 @@ class Program
 
         return currency;
     }
-    
+
     static async Task Main(string[] args)
     {
         IRemoteRepository repository = NBPRemoteRepository.GetInstance();
         IParser parser = new NBPXMLParser();
         ICurrencyCollection collection = new CurrencyCollection();
         ICurrencyExchanger exchanger = new CurrencyExchanger();
-        
+
         var data = await repository.GetData();
         parser.Parse(data, collection);
-        
+
         Console.WriteLine("Current rates: ");
         foreach (var currency in collection.GetAll())
         {
             Console.WriteLine(currency.ToString());
         }
 
-        ICurrency from = readCurrency("Source currency: ",  collection);
-        ICurrency to = readCurrency("Target currency: ",  collection);
+        ICurrency from = ReadCurrency("Source currency: ", collection);
+        ICurrency to = ReadCurrency("Target currency: ", collection);
 
         decimal amount;
         while (true)
@@ -66,6 +65,5 @@ class Program
 
         var result = exchanger.Exchange(from, to, amount);
         Console.WriteLine($"Final amount: {result} {to.Code}");
-
     }
 }

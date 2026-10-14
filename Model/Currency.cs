@@ -1,19 +1,12 @@
 namespace CurrencyConverter.Model;
 
-public class Currency : ICurrency
+public class Currency(string name, string code, decimal rate, decimal multiplier)
+    : ICurrency
 {
-    public string Name { get; set; }
-    public string Code { get; set; }
-    public decimal Rate { get; set; }
-    public decimal Multiplier { get; set; }
-
-    public Currency(string name, string code, decimal rate, decimal multiplier)
-    {
-        Name = name;
-        Code = code;
-        Rate = rate;
-        Multiplier = multiplier;
-    }
+    public string Name { get; set; } = name;
+    public string Code { get; set; } = code;
+    public decimal Rate { get; set; } = rate;
+    public decimal Multiplier { get; set; } = multiplier;
 
     public override string ToString()
     {
